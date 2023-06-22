@@ -1,0 +1,113 @@
+openapi: 3.0.3
+info:
+  title: Artifacts
+  description: |-
+    Artifacts or objects that could be large in pipeline executions
+  version: 0.0.0
+servers:
+  - url: https://items.spinnaker.io/api/v0
+tags:
+  - name: artifacts
+    description: Everything about your Artifacts
+paths:
+  /artifacts:
+    post:
+      tags:
+        - artifacts
+      summary: Add a new artifact
+      description: Add a new artifact
+      operationId: addArtifact
+      requestBody:
+        description: Create a new Artifact
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Artifact'
+        required: true
+      responses:
+        '201':
+          description: Artifact created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artifact'
+  /artifacts/{artifactId}:
+    get:
+      tags:
+        - artifacts
+      summary: Find Artifact by id
+      description: Returns a single artifact
+      operationId: getArtifactById
+      parameters:
+        - name: artifactId
+          in: path
+          description: Id of artifact to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artifact'
+        '404':
+          description: Artifact not found
+    delete:
+      tags:
+        - artifacts
+      summary: Deletes an Artifact
+      description: delete an artifact
+      operationId: deleteArtifact
+      parameters:
+        - name: artifactId
+          in: path
+          description: Artifact id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: successful operation
+components:
+  schemas:
+    Artifact:
+      required:
+        - name
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: kustomize
+        content:
+          $ref: '#/components/schemas/Content'
+        type:
+          type: string
+          description: artifact type
+          enum:
+            - base64
+            - json
+        createdAt:
+          type: string
+          format: date-time
+    Content:
+      description: content of the artifact
+      anyOf:
+        - type: string
+        - type: array
+          items: {}
+        - type: object
+  requestBodies:
+    Artifact:
+      description: Artifact
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Artifact'
