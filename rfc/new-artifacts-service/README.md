@@ -205,3 +205,25 @@ runs a pipeline with artifacts and later disables the feature, leaving orphaned 
   * s3
 * Move [clouddriver-artifacts](https://github.com/spinnaker/clouddriver/blob/master/clouddriver-artifacts)
 to the new artifacts service
+* [Implement ACLs to artifacts](https://docs.spring.io/spring-security/reference/servlet/authorization/acls.html)
+  * Add permissions to artifact accounts in configuration, example:
+
+  ```yaml
+  artifacts:
+    gitrepo:
+      enabled: true
+      accounts:
+      - name: git-repo-account
+        username: my-git-user
+        token: encrypted:k8s!n:my-secret!k:my-token
+        permissions:
+          READ:
+            - foo
+            - bar
+          WRITE:
+            - baz
+  ```
+
+  * Include the account in artifacts creation
+  * for "Embedded" artifacts(dynamically generated in Spinnaker, for example using SPeL)
+  we can use Application permissions
