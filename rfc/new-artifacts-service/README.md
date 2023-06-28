@@ -181,7 +181,8 @@ Notes:
 ## Known Unknowns
 
 * Not all the stages/services that can produce/consume those artifacts/objects are known.
-* How will artifacts be passed in automated triggers?
+* How will artifacts be passed in automated triggers? <br/>
+  There seems to be no special treatment for trigger artifacts, this feature should be fine.
 * How to migrate/support existing executions?
 
 ## Security, Privacy, and Compliance
